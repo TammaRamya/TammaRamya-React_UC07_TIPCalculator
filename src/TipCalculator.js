@@ -3,71 +3,76 @@ export default class TipCalculator extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            Bill:'',
-            convertype:'',
+            data:{'':0,'30%-outstanding':30,'20%-Good':20,'15%-ok':15,'10%-Bad':10,'5%-Terrible':5},
+            totalBill:'',
+            rating:'',
             people:'',
-            Totaltip:'',
-            Total:'',
-            Totalbillperperson:''
+            totalTip:'',
+            totalBillperPerson:'',
         }
+       
     }
-    Temp=(event)=>{
+    onChangeBill=(event)=>{
         this.setState({
-            Bill:Number(event.target.value)
+            totalBill:event.target.value.replace(/\D/g, '')
         })
     }
-    Type=(event)=>{
+    onChangeRating=(event)=>{
         this.setState({
-            convertype:event.target.value
+            rating:event.target.value
         })
     }
-    People=(event)=>{
+    onChangePeople=(event)=>{
         this.setState({
-            people:event.target.value
+            people:event.target.value.replace(/\D/g, '')
+        })
+    }
+    onChangeR=(event)=>{
+        this.setState({
+            r:event.target.value
         })
     }
     all=(event)=>{
-        if(isNaN(this.state.Bill))
-{
-alert("please enter valid no");
-}
-else
-{
+    
     this.setState({
-                 Totaltip:(this.state.convertype*this.state.Bill)/100,
+                  totalTip:(this.state.rating*this.state.totalBill)/100,
 
-                  Totalbillperperson:(this.state.Bill+(this.state.convertype*this.state.Bill)/100)/(this.state.people)
+                  totalBillperPerson:Number(this.state.totalBill)+(this.state.rating*this.state.totalBill/100)/(this.state.people)
     })
-}
     }
+
+   
     render(){
+        const {totalTip,totalBillperPerson }= this.state;
         return(
+           
                 <div>
                     <h1>TipCalculator</h1>
                     <label>How much is your bill?</label>
-                    <div><label>${" "}</label><input value={this.state.temprature} onChange={this.Temp} placeholder="Bill Amount"/></div>
+                    <div>
+                        <label>${" "}</label>
+                    <input value={this.state.totalBill} onChange={this.onChangeBill} placeholder="Bill Amount"/></div>
                           &nbsp;
                           <div><label>How much your service?</label> </div>
+                          
                           <div>
-                              <select value={this.state.convertype} onChange={this.Type} id='select box'>
-                              <option value="30">30%-outstanding</option>
-                              <option value="20">20%-Good</option>
-                               <option value="15">15%-Ok</option>
-                               <option value="10">10%-Bad</option>
-                                <option value="5">5%-Terrible</option>
-                                  </select>  
+                              <select value={this.state.rating} onChange={this.onChangeRating}>
+                                  {Object.entries(this.state.data).map(([key,value])=>(
+                                      <option value={value}>{key}</option>
+                                  ))}
+                              </select>
                           </div>
                           &nbsp;
                           <div><label>How many people sharing the bill?</label></div>
                           <div>
-                          <input value={this.state.people} onChange={this.People} placeholder="No of people"/><label>People</label></div>
+                          <input value={this.state.people} onChange={this.onChangePeople} placeholder="No of people"/><label>People</label></div>
                           &nbsp;
                           <div><button  onClick={this.all}>Calculate</button></div>
                           &nbsp;
                             <div>
-                          <h4>Totaltip:{'$'+this.state.Totaltip} </h4>
+                          <h4>Totaltip:${totalTip} </h4>
                           <div>
-                          <h4>Totalbillperperson:{'$'+this.state.Totalbillperperson} </h4></div>
+                          <h4>Totalbillperperson:${totalBillperPerson} </h4></div>
                            </div>
                 </div>
         )
