@@ -5,7 +5,6 @@ import './App.css';
 import Tip from './TipCalculator';
 //import Counter from './Counter';
 //import Temp from './TempratureConverter';
-import Pattern from './Pattern';
 function App() {
   return (
     <div className="App">
