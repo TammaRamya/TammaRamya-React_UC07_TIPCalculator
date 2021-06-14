@@ -1,9 +1,9 @@
 import React from 'react';
+const data={'':0,'30%-outstanding':30,'20%-Good':20,'15%-ok':15,'10%-Bad':10,'5%-Terrible':5};
 export default class TipCalculator extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            data:{'':0,'30%-outstanding':30,'20%-Good':20,'15%-ok':15,'10%-Bad':10,'5%-Terrible':5},
             totalBill:'',
             rating:'',
             people:'',
@@ -12,6 +12,7 @@ export default class TipCalculator extends React.Component{
         }
        
     }
+   
     onChangeBill=(event)=>{
         this.setState({
             totalBill:event.target.value.replace(/\D/g, '')
@@ -27,23 +28,19 @@ export default class TipCalculator extends React.Component{
             people:event.target.value.replace(/\D/g, '')
         })
     }
-    onChangeR=(event)=>{
-        this.setState({
-            r:event.target.value
-        })
-    }
     all=(event)=>{
+        const {totalBill,rating,people }= this.state;
     
     this.setState({
-                  totalTip:(this.state.rating*this.state.totalBill)/100,
+                  totalTip:(rating*totalBill)/100,
 
-                  totalBillperPerson:Number(this.state.totalBill)+(this.state.rating*this.state.totalBill/100)/(this.state.people)
+                  totalBillperPerson:Number(totalBill)+(rating*totalBill/100)/(people)
     })
     }
 
    
     render(){
-        const {totalTip,totalBillperPerson }= this.state;
+        const {totalBill,rating,people,totalTip,totalBillperPerson }= this.state;
         return(
            
                 <div>
@@ -51,13 +48,13 @@ export default class TipCalculator extends React.Component{
                     <label>How much is your bill?</label>
                     <div>
                         <label>${" "}</label>
-                    <input value={this.state.totalBill} onChange={this.onChangeBill} placeholder="Bill Amount"/></div>
+                    <input value={totalBill} onChange={this.onChangeBill} placeholder="Bill Amount"/></div>
                           &nbsp;
                           <div><label>How much your service?</label> </div>
                           
                           <div>
-                              <select value={this.state.rating} onChange={this.onChangeRating}>
-                                  {Object.entries(this.state.data).map(([key,value])=>(
+                              <select value={rating} onChange={this.onChangeRating}>
+                                  {Object.entries(data).map(([key,value])=>(
                                       <option value={value}>{key}</option>
                                   ))}
                               </select>
@@ -65,7 +62,7 @@ export default class TipCalculator extends React.Component{
                           &nbsp;
                           <div><label>How many people sharing the bill?</label></div>
                           <div>
-                          <input value={this.state.people} onChange={this.onChangePeople} placeholder="No of people"/><label>People</label></div>
+                          <input value={people} onChange={this.onChangePeople} placeholder="No of people"/><label>People</label></div>
                           &nbsp;
                           <div><button  onClick={this.all}>Calculate</button></div>
                           &nbsp;
